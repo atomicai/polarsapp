@@ -1,0 +1,86 @@
+[
+  {
+    "id": "a8db9e5f-0856-49f1-a67a-9c0ea9ca010b",
+    "is_image": true,
+    "keyphrases": [
+      {
+        "id": "51ccdcd6-7cdf-491b-9ea8-41627bdecb95",
+        "phrase": "first sign of trouble"
+      },
+      {
+        "id": "bf2004c6-256a-4a7b-a7e5-982747394d59",
+        "phrase": "ahead of the curve"
+      }
+    ],
+    "keywords": [
+      {
+        "id": "237499a7-51b3-4006-babb-bd9b7b45436c",
+        "word": "leper"
+      },
+      {
+        "id": "415b4a9a-6c6b-4723-aaff-a5894cc3729a",
+        "word": "freak"
+      }
+    ],
+    "media_path": "./img/batman/joker-in-prison.png",
+    "movie": "Dark Knight (2008)",
+    "score": 20,
+    "speaker_name": "Joker",
+    "text": "To them, you're just a freak, like me! They need you right now, but when they don't, they'll cast you out, like a leper! You see, their code, it's a bad joke. Dropped at the first sign of trouble. They're only as good as the world allows them to be. See, I'm not a monster. I'm just ahead of the curve.",
+    "type": "movie"
+  },
+  {
+    "id": "4c29d248-3bbc-49fb-ac46-d0e5b4f6b617",
+    "is_image": true,
+    "keyphrases": [],
+    "keywords": [
+      {
+        "id": "cbfbeae5-2f50-4b93-8e45-fa8fdc233054",
+        "word": "realize"
+      },
+      {
+        "id": "4eb4ad58-51dc-41c7-81d2-e597e1aaeeb7",
+        "word": "unusual"
+      }
+    ],
+    "media_path": "./img/inception/middle-road.png",
+    "movie": "Inception",
+    "score": 20,
+    "speaker_name": null,
+    "text": "Dreams are more than real when we are in them, and only when we wake up do we realize how unusual they are.",
+    "type": "movie"
+  },
+  {
+    "id": "1c13df65-f5c4-43d6-9af3-2786259e5f9e",
+    "is_image": true,
+    "keyphrases": [],
+    "keywords": [
+      {
+        "id": "900ebb4f-3d28-4d04-aafa-2fe9b7ad8156",
+        "word": "drunk"
+      },
+      {
+        "id": "a414cb03-e025-4380-b61f-e15f03c451d8",
+        "word": "claws"
+      }
+    ],
+    "media_path": "./img/deadpool/deadpool-wolverine.png",
+    "movie": "Deadpool & Wolverine",
+    "score": 20,
+    "speaker_name": "Deadpool",
+    "text": "- Claws don't stand up when you're drunk? This happens to Wolverines over 40.",
+    "type": "movie"
+  },
+  {
+    "author_name": "Дмитрий Глуховский",
+    "book_name": "Метро 2033",
+    "id": "c04ab832-3fbf-4971-b8e8-78a1487bb3eb",
+    "is_image": true,
+    "keyphrases": [],
+    "keywords": [],
+    "media_path": "./img/metro2033/everyonewantstobestalker.png",
+    "score": 20,
+    "text": "Каждый сталкер становился человеком-легендой, полубогом, на которого восторженно смотрели все – от мала до велика. Когда дети рождаются в мире, в котором некуда и незачем больше плыть и лететь, а слова «летчик» и «моряк» тускнеют и постепенно теряют свой смысл, они хотят стать сталкерами. Уходить облаченными в сверкающие доспехи, провожаемыми сотнями полных обожания и благоговения взглядов, наверх, к богам, сражаться с чудовищами и, возвращаясь сюда, под землю, нести людям топливо, боеприпасы, свет и огонь. Нести жизнь.\nСталкером хотели стать и Артем, и его друг Женька, и Виталик Заноза. И, заставляя себя ползти вверх по устрашающе скрипящему эскалатору с обваливающимися ступенями, они представляли себя в защитных костюмах, с дозиметрами, со здоровенными ручными пулеметами наперевес, как и положено настоящим сталкерам. Но не было у них ни дозиметров, ни защиты, а вместо грозных армейских пулеметов – только древняя двустволка, которая, может, и не стреляла вовсе...",
+    "type": "book"
+  }
+]
