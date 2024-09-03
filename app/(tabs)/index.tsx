@@ -16,7 +16,7 @@ import Colors from '@/constants/Colors';
 import CustomSwiper from '@/components/CustomSwiper';
 import example_polaroids from '@/data/polaroids.json';
 import { Keyphrase, Keyword, Polaroid, PolaroidResponse } from '@/shared/types/polaroids';
-import { useState, useRef, useEffect, ReactElement } from 'react';
+import React, { useState, useRef, useEffect, ReactElement, useCallback } from 'react';
 import TabBarIcon from '@/components/icons/tabs/utils';
 import Swiper from 'react-native-deck-swiper';
 import { API_BASE_URL } from '@/shared/api';
@@ -83,9 +83,104 @@ export default function HomeScreen() {
     }
   });
 
-  // useEffect(() => {
-  //   mutation.mutate();
-  // }, []);
+  useEffect(() => {
+    mutation.mutate();
+  }, []);
+
+  type Keystone = {
+    first: number;
+    last: number;
+    text: string;
+    isHighlighted: boolean;
+  };
+
+  function toReactElement({ text, keyphrases, keywords }: PolaroidResponse): ReactElement | string {
+    if (!keyphrases.length && !keywords.length) return text;
+
+    const keystones: string[] = (keyphrases ?? [])
+      .map((item) => item.phrase)
+      .concat((keywords ?? []).map((item) => item.word));
+
+    let paragraphs: Keystone[] = [];
+
+    const highlights: Keystone[] = keystones
+      .map((h) => {
+        const indexOfFirst = text.indexOf(h);
+        const indexOfLast = indexOfFirst + h.length;
+        return {
+          first: indexOfFirst,
+          last: indexOfLast,
+          text: h,
+          isHighlighted: true
+        };
+      })
+      .sort((a, b) => a.first - b.first);
+
+    highlights.map((h, index) => {
+      if (h.first === 0 && index === 0) {
+        paragraphs.push(h);
+        paragraphs.push({
+          first: h.last + 1,
+          last: highlights[index + 1].first,
+          text: text.substring(h.last + 1, highlights[index + 1].first),
+          isHighlighted: false
+        });
+        return;
+      }
+      if (h.first !== 0 && index === 0) {
+        paragraphs.push({
+          first: 0,
+          last: h.first,
+          text: text.substring(0, h.first),
+          isHighlighted: false
+        });
+        paragraphs.push(h);
+        paragraphs.push({
+          first: h.last,
+          last: highlights[index + 1].first,
+          text: text.substring(h.last, highlights[index + 1].first),
+          isHighlighted: false
+        });
+        return;
+      }
+
+      if (index === highlights.length - 1) {
+        paragraphs.push(h);
+        paragraphs.push({
+          first: h.last + 1,
+          last: text.length - 1,
+          text: text.substring(h.last, text.length),
+          isHighlighted: false
+        });
+
+        return;
+      }
+      paragraphs.push(h);
+      paragraphs.push({
+        first: h.last,
+        last: highlights[index + 1].first,
+        text: text.substring(h.last, highlights[index + 1].first),
+        isHighlighted: false
+      });
+
+      return;
+    });
+
+    return (
+      <>
+        {paragraphs
+          .sort((a, b) => a.first - b.first)
+          .map((p, index) => (
+            <Text
+              key={index}
+              style={[styles.text, { color: p.isHighlighted ? '#FDF731' : 'white' }]}
+            >
+              {p.text}
+            </Text>
+          ))}
+      </>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -118,7 +213,7 @@ export default function HomeScreen() {
           <CustomSwiper
             ref={swiperRef}
             // cards={mutation.data ?? example_polaroids}
-            cards={example_polaroids}
+            cards={mutation.data ?? example_polaroids}
             onSwipedLeft={onSwipedLeft}
             onSwipedRight={onSwipedRight}
             onSwipedTop={onSwipedTop}
@@ -177,7 +272,7 @@ export default function HomeScreen() {
                     />
                   </Pressable>
                 </View>
-                <ScrollView fadingEdgeLength={120} style={{ flexGrow: 1, maxHeight: '14%' }}>
+                <ScrollView fadingEdgeLength={120} style={{ flexGrow: 1, maxHeight: '25%' }}>
                   <Text style={styles.text}>{toReactElement(card)}</Text>
                 </ScrollView>
 
@@ -307,45 +402,3 @@ const styles = StyleSheet.create({
     color: 'white'
   }
 });
-
-type Keystone = {
-  first: number;
-  last: number;
-  text: string;
-};
-
-function toReactElement({ text, keyphrases, keywords }: PolaroidResponse): ReactElement | string {
-  if (!keyphrases && !keywords) return text;
-
-  const keystones: string[] = (keyphrases ?? [])
-    .map((item) => item.phrase)
-    .concat((keywords ?? []).map((item) => item.word));
-
-  const highlights: Keystone[] = keystones.map((h) => {
-    const indexOfFirst = text.indexOf(h);
-    const indexOfLast = indexOfFirst + h.length - 1;
-    return {
-      first: indexOfFirst,
-      last: indexOfLast,
-      text: h
-    };
-  });
-
-  let modifiedText = text;
-
-  const newH = highlights.map((word, index) => {
-    modifiedText = text.replace(word.text, 'SPECIAL');
-    const slice = text.slice(word.first, word.last + 1);
-    return {
-      ...word,
-      sliceWord: slice
-    };
-  });
-
-  const words: string[] = text.split('SPECIAL');
-
-  console.log(highlights);
-  // console.log(modifiedText);
-  const blocks = newH.map((word, index) => {});
-  return <>{blocks}</>;
-}

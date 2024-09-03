@@ -17,33 +17,35 @@ clientWithAuth.interceptors.request.use(async (config) => {
   return config;
 });
 
-// clientWithAuth.interceptors.response.use(
-//   async function (response) {
-//     return response;
-//   },
-//   async function (error: AxiosError) {
-//     const originalRequest = error.config;
-//     if (!originalRequest) return error;
-//     if (error.response?.status === 401) {
-//       const token = await AsyncStorage.getItem('session');
-//       // @ts-ignore
-//       if (originalRequest._retry) return error;
-//       if (!token) return error;
-//       // @ts-ignore
-//       originalRequest._retry = true;
+clientWithAuth.interceptors.response.use(
+  async function (response) {
+    return response;
+  },
+  async function (error: AxiosError) {
+    const originalRequest = error.config;
+    if (!originalRequest) return error;
+    if (error.response?.status === 401) {
+      const token = await AsyncStorage.getItem('session');
+      // @ts-ignore
+      if (originalRequest._retry) return error;
+      if (!token) return error;
+      // @ts-ignore
+      originalRequest._retry = true;
 
-//       try {
-//         const refresh_token: string = JSON.parse(token).refresh_token;
-//         const response = await refreshAccessToken({ refresh_token });
-//         console.log(response);
-//       } catch (e) {
-//         throw e;
-//       }
+      try {
+        const refresh_token: string = JSON.parse(token).refresh_token;
+        const response = await refreshAccessToken({ refresh_token });
+        const jsonValue = JSON.stringify(response);
+        await AsyncStorage.setItem('session', jsonValue);
+      } catch (e) {
+        AsyncStorage.removeItem('session');
+        throw e;
+      }
 
-//       return clientWithAuth(originalRequest);
-//     }
-//     throw error;
-//   }
-// );
+      return clientWithAuth(originalRequest);
+    }
+    throw error;
+  }
+);
 
 export { clientDefault, clientWithAuth };
